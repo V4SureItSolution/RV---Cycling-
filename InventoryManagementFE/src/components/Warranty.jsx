@@ -5,10 +5,10 @@ import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { parseDateTime } from '../utils/dateUtils';
-import { 
-  Search, 
-  Eye, 
-  Printer, 
+import {
+  Search,
+  Eye,
+  Printer,
   RefreshCw,
   X,
   ChevronLeft,
@@ -51,19 +51,19 @@ const Warranty = () => {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showProductModal, setShowProductModal] = useState(false);
-  
+
   // Company/Shop Details from Backend
   const [companyDetails, setCompanyDetails] = useState({
-    name: "Avva Inventory",
-    address: "No.71, M.T.H.road (Opp padi post office)",
-    city: "Padi, Chennai - 600 050",
-    phone: "93423 01582",
+    name: "Rv Cycling",
+    address: "RV Fashion # 1944, TNHB H.G. Road,",
+    city: "Kakkalur by pass, Kakkalur - 602003",
+    phone: "8220912322 9843738588",
     email: "",
     gst: "",
     logo: null,
     logoUrl: null
   });
-  
+
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [showCompanySelector, setShowCompanySelector] = useState(false);
@@ -102,7 +102,7 @@ const Warranty = () => {
     try {
       const response = await api.get('/companies/list');
       console.log('Companies response:', response.data);
-      
+
       if (response.data && response.data.length > 0) {
         setCompanies(response.data);
         const firstCompany = response.data[0];
@@ -175,7 +175,7 @@ const Warranty = () => {
       const response = await api.get('/billing/warranty/search', {
         params: { bill_number: billNumber }
       });
-      
+
       setWarrantyData(response.data);
       showMessage("success", `✅ Warranty information loaded for ${response.data.billNumber}`);
     } catch (err) {
@@ -261,18 +261,18 @@ const Warranty = () => {
 
   const calculateWarrantySummary = () => {
     if (!warrantyData?.items) return { active: 0, expired: 0, total: 0, totalValue: 0 };
-    
+
     let active = 0;
     let expired = 0;
     let totalValue = 0;
-    
+
     warrantyData.items.forEach(item => {
       const status = item.warranty?.warrantyStatus?.status;
       if (status === 'active') active++;
       if (status === 'expired') expired++;
       totalValue += (item.total || 0);
     });
-    
+
     return {
       active,
       expired,
@@ -283,42 +283,42 @@ const Warranty = () => {
 
   const handleExportPDF = () => {
     if (!warrantyData) return;
-    
+
     try {
       const doc = new jsPDF();
       const summary = calculateWarrantySummary();
-      
+
       // Header
       doc.setFontSize(20);
       doc.setTextColor(99, 102, 241);
       doc.text('Warranty Report', 14, 22);
-      
+
       // Bill info
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text(`Bill Number: ${warrantyData.billNumber}`, 14, 40);
       doc.text(`Customer: ${warrantyData.customerName || 'Walk-in Customer'}`, 14, 47);
       doc.text(`Billed Date: ${formatDate(warrantyData.billedDate)}`, 14, 54);
-      
+
       // Summary
       doc.setFontSize(11);
       doc.text(`Total Products: ${summary.total}`, 14, 65);
       doc.text(`Active Warranties: ${summary.active}`, 14, 72);
       doc.text(`Expired Warranties: ${summary.expired}`, 14, 79);
       doc.text(`Total Value: ${formatCurrency(summary.totalValue)}`, 14, 86);
-      
+
       // Products table
       const tableColumn = [
         '#', 'Product', 'Model', 'Warranty Period', 'Start Date', 'End Date', 'Status', 'Days Left'
       ];
-      
+
       const tableRows = warrantyData.items.map((item, index) => {
         const warranty = item.warranty;
         const status = warranty?.warrantyStatus?.status || 'unknown';
         const daysLeft = warranty?.warrantyStatus?.days_left;
         const daysExpired = warranty?.warrantyStatus?.days_expired;
         const daysDisplay = status === 'active' ? `${daysLeft} days` : status === 'expired' ? `Expired ${daysExpired} days ago` : 'N/A';
-        
+
         return [
           (index + 1).toString(),
           item.productName,
@@ -330,12 +330,12 @@ const Warranty = () => {
           daysDisplay
         ];
       });
-      
+
       const callAutoTable = (d, opts) => {
         if (typeof autoTable === 'function') autoTable(d, opts);
         else if (typeof d.autoTable === 'function') d.autoTable(opts);
       };
-      
+
       callAutoTable(doc, {
         head: [tableColumn],
         body: tableRows,
@@ -345,10 +345,10 @@ const Warranty = () => {
         alternateRowStyles: { fillColor: [240, 240, 240] },
       });
 
-      
+
       const date = new Date().toISOString().split('T')[0];
       doc.save(`Warranty_${warrantyData.billNumber}_${date}.pdf`);
-      
+
       showMessage("success", "✅ Warranty report exported to PDF");
     } catch (err) {
       console.error("PDF export error:", err);
@@ -358,14 +358,14 @@ const Warranty = () => {
 
   const handleExportExcel = () => {
     if (!warrantyData) return;
-    
+
     try {
       const exportData = warrantyData.items.map((item, index) => {
         const warranty = item.warranty;
         const status = warranty?.warrantyStatus?.status || 'unknown';
         const daysLeft = warranty?.warrantyStatus?.days_left;
         const daysExpired = warranty?.warrantyStatus?.days_expired;
-        
+
         return {
           'S.No': index + 1,
           'Product Name': item.productName,
@@ -407,7 +407,7 @@ const Warranty = () => {
 
       const date = new Date().toISOString().split('T')[0];
       saveAs(file, `Warranty_${warrantyData.billNumber}_${date}.xlsx`);
-      
+
       showMessage("success", `✅ Exported warranty details to Excel`);
     } catch (err) {
       console.error("Export error:", err);
@@ -417,10 +417,10 @@ const Warranty = () => {
 
   const handlePrintWarranty = () => {
     if (!warrantyData) return;
-    
+
     const printWindow = window.open('', '_blank');
     const summary = calculateWarrantySummary();
-    
+
     printWindow.document.write(`
       <html>
         <head>
@@ -591,13 +591,13 @@ const Warranty = () => {
             </thead>
             <tbody>
               ${warrantyData.items.map((item, index) => {
-                const warranty = item.warranty;
-                const status = warranty?.warrantyStatus?.status;
-                const daysLeft = warranty?.warrantyStatus?.days_left;
-                const daysExpired = warranty?.warrantyStatus?.days_expired;
-                const daysDisplay = status === 'active' ? `${daysLeft} days remaining` : status === 'expired' ? `Expired ${daysExpired} days ago` : 'N/A';
-                
-                return `
+      const warranty = item.warranty;
+      const status = warranty?.warrantyStatus?.status;
+      const daysLeft = warranty?.warrantyStatus?.days_left;
+      const daysExpired = warranty?.warrantyStatus?.days_expired;
+      const daysDisplay = status === 'active' ? `${daysLeft} days remaining` : status === 'expired' ? `Expired ${daysExpired} days ago` : 'N/A';
+
+      return `
                   <tr>
                     <td>${index + 1}</td>
                     <td>${item.productName}</td>
@@ -609,7 +609,7 @@ const Warranty = () => {
                     <td>${daysDisplay}</td>
                   </tr>
                 `;
-              }).join('')}
+    }).join('')}
             </tbody>
           </table>
           
@@ -967,17 +967,17 @@ const Warranty = () => {
             </h1>
           </div>
         </div>
-        
+
         {companies.length > 0 && (
           <div style={{ position: 'relative' }}>
-            <div 
+            <div
               style={styles.companySelector}
               onClick={() => setShowCompanySelector(!showCompanySelector)}
             >
               <Building2 size={16} style={{ marginRight: '8px' }} />
               {companies.find(c => c.id === selectedCompanyId)?.name || 'Select Company'}
             </div>
-            
+
             {showCompanySelector && (
               <div style={styles.companyDropdown}>
                 {companies.map(company => (
@@ -1003,9 +1003,9 @@ const Warranty = () => {
       {message.text && (
         <div style={{
           ...styles.message,
-          ...(message.type === "success" ? styles.successMessage : 
-             message.type === "error" ? styles.errorMessage : 
-             styles.infoMessage)
+          ...(message.type === "success" ? styles.successMessage :
+            message.type === "error" ? styles.errorMessage :
+              styles.infoMessage)
         }}>
           {message.type === "success" && <CheckCircle size={18} />}
           {message.type === "error" && <AlertCircle size={18} />}
@@ -1026,7 +1026,7 @@ const Warranty = () => {
             onKeyPress={handleKeyPress}
             disabled={loading}
           />
-          <button 
+          <button
             style={styles.searchButton}
             onClick={searchWarranty}
             disabled={loading}
@@ -1098,19 +1098,19 @@ const Warranty = () => {
                 Product Warranty Status
               </h2>
               <div style={styles.buttonGroup}>
-                <button 
-                  style={{...styles.button, ...styles.primaryButton}}
+                <button
+                  style={{ ...styles.button, ...styles.primaryButton }}
                   onClick={handleExportExcel}
                 >
                   <FileSpreadsheet size={14} /> Excel
                 </button>
-                <button 
-                  style={{...styles.button, ...styles.successButton}}
+                <button
+                  style={{ ...styles.button, ...styles.successButton }}
                   onClick={handleExportPDF}
                 >
                   <FileJson size={14} /> PDF
                 </button>
-                <button 
+                <button
                   style={styles.button}
                   onClick={handlePrintWarranty}
                 >
@@ -1118,7 +1118,7 @@ const Warranty = () => {
                 </button>
               </div>
             </div>
-            
+
             <div style={{ overflowX: 'auto' }}>
               <table style={styles.warrantyTable}>
                 <thead>
@@ -1144,11 +1144,11 @@ const Warranty = () => {
                     const isActive = warrantyStatus?.status === 'active';
                     const daysLeft = warrantyStatus?.days_left;
                     const daysExpired = warrantyStatus?.days_expired;
-                    
+
                     return (
                       <tr key={item.productId || index}>
                         <td style={styles.td}>{index + 1}</td>
-                        <td style={{...styles.td, fontWeight: '600'}}>{item.productName}</td>
+                        <td style={{ ...styles.td, fontWeight: '600' }}>{item.productName}</td>
                         <td style={styles.td}>{item.productModel || 'N/A'}</td>
                         <td style={styles.td}>{item.quantity}</td>
                         <td style={styles.td}>{formatCurrency(item.sellPrice)}</td>
@@ -1179,7 +1179,7 @@ const Warranty = () => {
                         </td>
                         <td style={styles.td}>
                           <button
-                            style={{...styles.actionButton, backgroundColor: '#3b82f6', color: 'white'}}
+                            style={{ ...styles.actionButton, backgroundColor: '#3b82f6', color: 'white' }}
                             onClick={() => handleViewProductDetails(item)}
                             title="View Details"
                           >
@@ -1237,52 +1237,52 @@ const Warranty = () => {
             <button style={styles.modalClose} onClick={() => setShowProductModal(false)}>
               <X size={20} />
             </button>
-            
+
             <h2 style={{ color: '#f9fafb', marginBottom: '20px', fontSize: '20px' }}>
               <Package size={20} style={{ display: 'inline', marginRight: '8px' }} />
               Product Details
             </h2>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Product Name</p>
               <p style={{ color: '#f9fafb', fontWeight: '600', fontSize: '16px' }}>{selectedProduct.productName}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Model</p>
               <p style={{ color: '#f9fafb' }}>{selectedProduct.productModel || 'N/A'}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Quantity</p>
               <p style={{ color: '#f9fafb' }}>{selectedProduct.quantity}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Price</p>
               <p style={{ color: '#f9fafb' }}>{formatCurrency(selectedProduct.sellPrice)}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Total</p>
               <p style={{ color: '#f9fafb', fontWeight: '600' }}>{formatCurrency(selectedProduct.total)}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Warranty Period</p>
               <p style={{ color: '#f9fafb' }}>{selectedProduct.warranty?.warrantyPeriodMonths || 12} months</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Warranty Start Date</p>
               <p style={{ color: '#f9fafb' }}>{formatDate(selectedProduct.warranty?.warrantyStartDate)}</p>
             </div>
-            
+
             <div style={{ marginBottom: '15px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Warranty End Date</p>
               <p style={{ color: '#f9fafb' }}>{formatDate(selectedProduct.warranty?.warrantyEndDate)}</p>
             </div>
-            
+
             <div style={{ marginBottom: '20px' }}>
               <p style={{ color: '#9ca3af', marginBottom: '5px' }}>Warranty Status</p>
               <span style={{
@@ -1294,9 +1294,9 @@ const Warranty = () => {
                 {getWarrantyStatusConfig(selectedProduct.warranty?.warrantyStatus?.status).label}
               </span>
             </div>
-            
+
             <button
-              style={{...styles.button, ...styles.primaryButton, width: '100%', justifyContent: 'center'}}
+              style={{ ...styles.button, ...styles.primaryButton, width: '100%', justifyContent: 'center' }}
               onClick={() => setShowProductModal(false)}
             >
               Close

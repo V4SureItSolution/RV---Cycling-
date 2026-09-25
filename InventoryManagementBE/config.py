@@ -6,7 +6,7 @@ from datetime import timedelta
 pymysql.install_as_MySQLdb()
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root123@localhost/rv_cycling'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root123@localhost/rv'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # File upload configuration

@@ -76,10 +76,10 @@ const Bill = () => {
 
   // Shop details (will be overridden by selected company)
   const defaultShopDetails = {
-    name: 'Avva Inventory',
-    address: 'No.20, Satya Sai Nagar',
-    city: ' Madhavaram, Chennai, Tamil Nadu 600060',
-    phone: '',
+    name: 'RV Cycling',
+    address: 'RV Fashion # 1944, TNHB H.G. Road,',
+    city: ' Kakkalur by pass, Kakkalur - 602003 ',
+    phone: '8220912322 9843738588',
     gst: '',
   };
 

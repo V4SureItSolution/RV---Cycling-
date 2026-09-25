@@ -42,11 +42,11 @@ const InvoicePage = () => {
 
   // Company details
   const companyDetails = {
-    name: "Avva Inventory",
-    address: "No.71, M.T.H.road (Opp padi post office), Padi, Chennai - 600 050",
-    phone: "98657 09626",
-    email: "hiprintsolutions@gmail.com",
-    gstin: "33ABCDE1234F1Z5"
+    name: "RV Cycling",
+    address: "RV Fashion # 1944, TNHB H.G. Road, Kakkalur by pass, Kakkalur - 602003",
+    phone: "8220912322 9843738588",
+    email: "",
+    gstin: ""
   };
 
   // State for invoices list
@@ -885,9 +885,9 @@ const InvoicePage = () => {
         <body>
           <div class="header">
             <img src="/avva-logo.jpeg" class="company-logo" alt="Avva Inventory Logo">
-            <div class="company-name">Avva Inventory</div>
-            <div class="company-details">No.71, M.T.H.road (Opp padi post office), Padi, Chennai - 600 050</div>
-            <div class="company-details">Phone: 98657 09626 | Email: hiprintsolutions@gmail.com | GST: 33ABCDE1234F1Z5</div>
+            <div class="company-name">RV Cycling</div>
+            <div class="company-details">RV Fashion # 1944, TNHB H.G. Road, Kakkalur by pass, Kakkalur - 602003</div>
+            <div class="company-details">Phone: 8220912322 9843738588 | Email: [EMAIL_ADDRESS] | GST: </div>
           </div>
           
           <div class="document-title">TAX INVOICE</div>
@@ -965,7 +965,7 @@ const InvoicePage = () => {
           
           <div class="signature">
             <div>
-              <p><strong>For Avva Inventory</strong></p>
+              <p><strong>For RV Cycling</strong></p>
               <div class="signature-line"></div>
               <p>Authorized Signatory</p>
             </div>

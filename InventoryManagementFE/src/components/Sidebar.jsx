@@ -209,7 +209,7 @@ const Sidebar = ({ isOpen }) => {
       <style>{scrollbarStyles}</style>
       <div style={styles.sidebar} className="sidebar">
         <div style={styles.logoSection}>
-          {isOpen ? "Avva Inventory" : "M3"}
+          {isOpen ? "RV Cycling" : "RV"}
         </div>
 
         <div style={styles.navContainer}>

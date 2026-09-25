@@ -42,11 +42,11 @@ const QuotationPage = () => {
 
   // Company details
   const companyDetails = {
-    name: "Avva Inventory",
-    address: "No.71, M.T.H.road (Opp padi post office), Padi, Chennai - 600 050",
-    phone: "98657 09626",
-    email: "hiprintsolutions@gmail.com",
-    gstin: "33ABCDE1234F1Z5"
+    name: "RV Cycling",
+    address: "RV Fashion # 1944, TNHB H.G. Road, Kakkalur by pass, Kakkalur - 602003",
+    phone: "8220912322 9843738588",
+    email: "[EMAIL_ADDRESS]",
+    gstin: ""
   };
 
   // State for quotations list
@@ -449,10 +449,10 @@ const QuotationPage = () => {
         columnStyles: {
           0: { halign: 'center', cellWidth: 32, overflow: 'linebreak' }, // Quotation #
           1: { halign: 'center', cellWidth: 24, overflow: 'ellipsize' },
-          2: { halign: 'left',   cellWidth: 50, overflow: 'ellipsize' },
+          2: { halign: 'left', cellWidth: 50, overflow: 'ellipsize' },
           3: { halign: 'center', cellWidth: 28, overflow: 'ellipsize' },
           4: { halign: 'center', cellWidth: 24, overflow: 'ellipsize' },
-          5: { halign: 'right',  cellWidth: 24, overflow: 'ellipsize' }
+          5: { halign: 'right', cellWidth: 24, overflow: 'ellipsize' }
         },
         didDrawPage: (data) => {
           const pageCount = doc.internal.getNumberOfPages();
@@ -935,9 +935,9 @@ const QuotationPage = () => {
         <body>
           <div class="header">
             <img src="/avva-logo.jpeg" class="company-logo" alt="Avva Inventory Logo">
-            <div class="company-name">Avva Inventory</div>
-            <div class="company-details">No.71, M.T.H.road (Opp padi post office), Padi, Chennai - 600 050</div>
-            <div class="company-details">Phone: 98657 09626 | Email: hiprintsolutions@gmail.com | GST: 33ABCDE1234F1Z5</div>
+            <div class="company-name">RV Cycling</div>
+            <div class="company-details">RV Fashion # 1944, TNHB H.G. Road, Kakkalur by pass, Kakkalur - 602003</div>
+            <div class="company-details">Phone: 8220912322 9843738588 | Email: [EMAIL_ADDRESS] | GST: </div>
           </div>       
           
           <div class="document-title">QUOTATION</div>
