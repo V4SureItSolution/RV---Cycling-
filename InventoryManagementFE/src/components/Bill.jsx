@@ -1,7 +1,7 @@
-// Bill.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { formatDate, formatTime, formatDateTime, parseDateTime } from '../utils/dateUtils';
+import logo from '../assets/logo.png';
 
 const Bill = () => {
   // State management
@@ -1871,7 +1871,7 @@ const Bill = () => {
         <body>
           <div id="billPaper">
             <div class="bill-header">
-              <img src="/avva-logo.jpeg" class="bill-logo" alt="Avva Inventory Logo">
+              <img src="${logo}" class="bill-logo" alt="Logo">
               <h1>${shopDetails.name}</h1>
               <p>${shopDetails.address}</p>
               <p>${shopDetails.city}</p>
@@ -2729,7 +2729,7 @@ const Bill = () => {
             ref={billPaperRef}
           >
             <div className="bill-header">
-              <img src="/avva-logo.jpeg" alt="Avva Inventory Logo" style={{ maxWidth: '100px', marginBottom: '5px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+              <img src={logo} alt="Logo" style={{ maxWidth: '100px', marginBottom: '5px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
               <h1 style={baseStyles.billHeaderH1}>{shopDetails.name}</h1>
               <p style={baseStyles.billHeaderP}>{shopDetails.address}</p>
               <p style={baseStyles.billHeaderP}>{shopDetails.city}</p>
